@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOSA Medical Terminology Study Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#13233a;--muted:#5d6b7e;--bg:#f4f6f3;--card:#fff;--line:#dfe4e0;--teal:#0e7468;--teal-d:#0a5a51;--teal-l:#d9f2ee;--coral:#e0663f;--coral-l:#fde7df;--violet:#4b3aa0;--violet-l:#e8e3fb;--ok:#16794a;--ok-l:#dcf3e6;--bad:#b42323;--bad-l:#fbe1e1}
+*{box-sizing:border-box}
+body{margin:0;font-family:Lexend,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:var(--ink);color:#fff;position:sticky;top:0;z-index:5}
+.bar{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:1rem;display:flex;align-items:center;gap:9px;cursor:pointer;white-space:nowrap}
+.brand .dot{width:28px;height:28px;border-radius:8px;background:var(--coral);display:grid;place-items:center;font-size:.85rem}
+nav{display:flex;gap:2px;overflow-x:auto;flex:1}
+nav button{background:none;border:0;color:#c9d3e0;font:inherit;font-size:.88rem;padding:8px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+nav button.on,nav button:hover{background:rgba(255,255,255,.13);color:#fff}
+main{max-width:1080px;margin:0 auto;padding:26px 16px 70px}
+h1{font-size:1.85rem;margin:0 0 6px;line-height:1.15}
+h2{font-size:1.15rem;margin:0 0 12px}
+.sub{color:var(--muted);margin:0 0 22px;max-width:720px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1.25fr 1fr}
+@media(max-width:820px){.g2{grid-template-columns:1fr}}
+.modes{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+.mode{text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:.15s}
+.mode:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 6px 16px rgba(19,35,58,.08)}
+.mode .ic{font-size:1.5rem}
+.mode b{display:block;margin:6px 0 2px}
+.mode span{color:var(--muted);font-size:.86rem}
+.plan-row{display:grid;grid-template-columns:minmax(130px,1.1fr) 2fr 46px;align-items:center;gap:10px;font-size:.86rem;margin:6px 0}
+.prog-row{display:grid;grid-template-columns:minmax(120px,1fr) 1.4fr 70px;align-items:center;gap:10px;font-size:.84rem;margin:6px 0}
+.track{height:11px;background:#eef1ee;border-radius:6px;overflow:hidden}
+.fill{height:100%;background:var(--teal);border-radius:6px}
+.fill.c{background:var(--coral)}
+.num{color:var(--muted);font-size:.8rem;text-align:right}
+.btn{font:inherit;font-weight:500;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#e8ece9;color:var(--ink)}
+.btn.alt:hover{background:#dbe2dd}
+.btn.coral{background:var(--coral)}
+.btn.coral:hover{background:#c9532f}
+.btn.ok{background:var(--ok)}
+.btn.small{padding:7px 12px;font-size:.85rem}
+.btn:disabled{opacity:.45;cursor:default}
+select{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);max-width:100%}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:18px}
+.lbl{font-size:.78rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.muted{color:var(--muted)}
+.pill{display:inline-block;font-size:.74rem;padding:3px 9px;border-radius:20px;background:#eef1ee;color:var(--muted)}
+/* flashcards */
+.flash{perspective:1200px;max-width:660px;margin:0 auto}
+.fc{position:relative;height:300px;cursor:pointer;transform-style:preserve-3d;transition:transform .45s}
+.fc.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px 28px;text-align:center;border:1px solid var(--line);background:#fff;box-shadow:0 8px 24px rgba(19,35,58,.07)}
+.face.back{transform:rotateY(180deg);background:var(--teal-l);border-color:#b7e3dc}
+.face .tag{position:absolute;top:14px;left:16px;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.face .big{font-size:2.1rem;font-weight:600;line-height:1.2}
+.face .med{font-size:1.3rem}
+.face .hint{position:absolute;bottom:12px;font-size:.74rem;color:var(--muted)}
+.kb{position:absolute;top:12px;right:14px;font-size:.72rem;background:var(--ok-l);color:var(--ok);padding:3px 9px;border-radius:20px}
+.fc-actions{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.fc-actions .grp{display:flex;gap:8px}
+.keys{text-align:center;font-size:.76rem;color:var(--muted);margin-top:14px}
+kbd{background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;font-family:inherit;font-size:.72rem}
+/* quiz */
+.qwrap{max-width:780px;margin:0 auto}
+.q-prompt{font-size:1.25rem;margin:10px 0 18px}
+.q-prompt .term{font-weight:700;color:var(--teal-d)}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;padding:13px 16px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt.sel{border-color:var(--teal);background:var(--teal-l)}
+.opt.right{border-color:var(--ok);background:var(--ok-l)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-l)}
+.opt:disabled{cursor:default}
+.progress{height:8px;background:#e6eae7;border-radius:4px;overflow:hidden;margin:8px 0 12px}
+.progress div{height:100%;background:var(--coral);transition:width .3s}
+.meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.85rem;flex-wrap:wrap}
+.fb{margin-top:14px;padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.fb.ok{background:var(--ok-l);color:var(--ok)}
+.fb.bad{background:var(--bad-l);color:var(--bad)}
+.qgrid{display:flex;flex-wrap:wrap;gap:5px;margin-top:18px}
+.qgrid button{width:30px;height:30px;font:inherit;font-size:.72rem;border-radius:7px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--muted)}
+.qgrid button.a{background:var(--teal-l);border-color:#b7e3dc;color:var(--teal-d)}
+.qgrid button.cur{outline:2px solid var(--coral);outline-offset:1px}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}
+.score-big{font-size:3rem;font-weight:700;color:var(--teal);line-height:1}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:.78rem}
+.miss{padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.miss:last-child{border:0}
+.miss .y{color:var(--bad)}
+/* match */
+.mstat{display:flex;gap:18px;color:var(--muted);font-size:.9rem;margin-bottom:12px;flex-wrap:wrap}
+.mstat b{color:var(--ink)}
+.match{display:grid;grid-template-columns:1fr 1.5fr;gap:14px}
+@media(max-width:600px){.match{grid-template-columns:1fr 1.3fr;gap:8px}}
+.tile{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:12px;padding:11px 12px;cursor:pointer;text-align:left;min-height:56px;width:100%;margin-bottom:10px;transition:.15s;display:block}
+.tile.term{font-weight:600}
+.tile:hover{border-color:#9fcfc7}
+.tile.sel{border-color:var(--teal);background:var(--teal-l)}
+.tile.done{background:var(--ok-l);border-color:var(--ok);opacity:.4;pointer-events:none}
+.tile.shake{animation:shake .35s;border-color:var(--bad);background:var(--bad-l)}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.banner{background:var(--ok-l);color:var(--ok);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+/* builder */
+.bdef{font-size:1.35rem;font-weight:500;margin:8px 0 4px}
+.slots{display:flex;flex-wrap:wrap;gap:8px;min-height:62px;padding:10px;border:2px dashed #c8d1cb;border-radius:12px;align-items:center;margin:14px 0;background:#fafbfa}
+.slots .ph{color:#9aa5b1;font-size:.9rem}
+.pool{display:flex;flex-wrap:wrap;gap:8px}
+.ptile{font:inherit;font-weight:600;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-size:1rem}
+.ptile.prefix{background:var(--coral-l);color:#9a3a1c}
+.ptile.root{background:var(--teal-l);color:var(--teal-d)}
+.ptile.suffix{background:var(--violet-l);color:var(--violet)}
+.ptile.used{opacity:.25;pointer-events:none}
+.legend{display:flex;gap:14px;font-size:.78rem;color:var(--muted);margin-top:14px;flex-wrap:wrap}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.breakdown{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.bd{padding:7px 11px;border-radius:10px;font-size:.86rem;background:#fff}
+.term-out{font-size:1.6rem;font-weight:700;color:var(--ok)}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand" id="brand"><span class="dot">Rx</span>HOSA Med Term Study Lab</div>
+  <nav id="nav"></nav>
+</div></header>
+<main id="app"></main>
+
+<script>
+/* ================= DATA ================= */
+const PARTS_RAW = `p|a-, an-|without, absence of
+p|ab-|away from
+p|ad-|toward
+p|ante-, pre-|before, in front of
+p|anti-|against
+p|bi-|two
+p|brady-|slow
+p|circum-|around
+p|con-|together, with
+p|contra-|against, opposite
+p|dia-|through, complete
+p|dys-|bad, painful, difficult
+p|ec-, ecto-|out, outside
+p|endo-|within, inside
+p|epi-|upon, above
+p|eu-|good, normal
+p|ex-, exo-|out, away from
+p|hemi-|half
+p|hetero-|different
+p|homo-, homeo-|same, alike
+p|hyper-|above, excessive
+p|hypo-|below, deficient
+p|inter-|between
+p|intra-|within
+p|iso-|equal
+p|macro-|large
+p|mal-|bad, poor
+p|meta-|change, beyond
+p|micro-|small
+p|multi-|many
+p|neo-|new
+p|nulli-|none
+p|olig-, oligo-|few, scanty
+p|pan-|all
+p|para-|beside, abnormal
+p|per-|through
+p|peri-|around
+p|poly-|many, much
+p|post-|after, behind
+p|primi-|first
+p|pro-|before, forward
+p|pseudo-|false
+p|quadri-|four
+p|retro-|behind, backward
+p|semi-|half, partial
+p|sub-|under, below
+p|supra-|above
+p|syn-, sym-|together, joined
+p|tachy-|fast, rapid
+p|trans-|across, through
+p|tri-|three
+p|ultra-|beyond, excess
+p|uni-, mono-|one
+r|abdomin/o, lapar/o|abdomen
+r|acr/o|extremities, top
+r|aden/o|gland
+r|adren/o|adrenal gland
+r|angi/o, vas/o|vessel
+r|anter/o|front
+r|arteri/o|artery
+r|arthr/o|joint
+r|ather/o|fatty plaque
+r|bi/o|life
+r|blephar/o|eyelid
+r|bronch/o|bronchus (airway)
+r|carcin/o|cancer
+r|cardi/o|heart
+r|caud/o|tail, lower part of body
+r|cephal/o|head
+r|cerebr/o|cerebrum (largest part of the brain)
+r|cervic/o|neck; cervix
+r|chol/e|bile, gall
+r|cholecyst/o|gallbladder
+r|chondr/o|cartilage
+r|col/o|colon (large intestine)
+r|cost/o|rib
+r|crani/o|skull
+r|crin/o|secrete
+r|cutane/o, derm/o, dermat/o|skin
+r|cyan/o|blue
+r|cyst/o|urinary bladder, sac
+r|cyt/o|cell
+r|dent/o, odont/o|tooth
+r|dextr/o|right
+r|dors/o|back (of body)
+r|electr/o|electricity
+r|encephal/o|brain
+r|enter/o|small intestine
+r|erythr/o|red
+r|esophag/o|esophagus
+r|esthesi/o|feeling, sensation
+r|gastr/o|stomach
+r|gingiv/o|gums
+r|gloss/o, lingu/o|tongue
+r|glyc/o, gluc/o|sugar, glucose
+r|gynec/o|woman, female
+r|hem/o, hemat/o|blood
+r|hepat/o|liver
+r|hist/o|tissue
+r|hydr/o|water
+r|hyster/o, uter/o|uterus
+r|ile/o|ileum (final part of small intestine)
+r|kerat/o|cornea; hard, horny tissue
+r|kinesi/o|movement
+r|laryng/o|larynx (voice box)
+r|later/o|side
+r|leuk/o|white
+r|lip/o|fat
+r|lith/o|stone
+r|lymph/o|lymph
+r|mamm/o, mast/o|breast
+r|melan/o|black
+r|mening/o|meninges (membranes covering brain and spinal cord)
+r|men/o|menstruation
+r|my/o, muscul/o|muscle
+r|myel/o|bone marrow; spinal cord
+r|myring/o, tympan/o|eardrum
+r|necr/o|death
+r|nephr/o, ren/o|kidney
+r|neur/o|nerve
+r|noct/i|night
+r|ocul/o, ophthalm/o|eye
+r|onc/o|tumor
+r|onych/o|nail
+r|oophor/o, ovari/o|ovary
+r|orchi/o, test/o|testis
+r|or/o, stomat/o|mouth
+r|oste/o|bone
+r|ot/o|ear
+r|path/o|disease
+r|ped/o|child
+r|pharyng/o|pharynx (throat)
+r|phleb/o, ven/o|vein
+r|phon/o|voice, sound
+r|pleur/o|pleura (membrane around the lungs)
+r|pneum/o, pulmon/o|lung, air
+r|poster/o|back, behind
+r|proct/o|anus and rectum
+r|psych/o|mind
+r|py/o|pus
+r|pyel/o|renal pelvis
+r|radi/o|x-rays, radiation
+r|rect/o|rectum
+r|retin/o|retina
+r|rhin/o, nas/o|nose
+r|salping/o|fallopian (uterine) tube
+r|sarc/o|flesh, connective tissue
+r|sinistr/o|left
+r|somat/o|body
+r|spondyl/o, vertebr/o|vertebra (backbone)
+r|splen/o|spleen
+r|ten/o, tendin/o|tendon
+r|therm/o|heat
+r|thorac/o, pector/o|chest
+r|thromb/o|blood clot
+r|thyr/o, thyroid/o|thyroid gland
+r|trache/o|trachea (windpipe)
+r|trich/o|hair
+r|ur/o, urin/o|urine, urinary tract
+r|ureter/o|ureter
+r|urethr/o|urethra
+r|ventr/o|belly, front of body
+r|viscer/o|internal organs
+r|xer/o|dry
+s|-ac, -al, -ic, -ous|pertaining to
+s|-algia, -dynia|pain
+s|-cele|hernia, swelling
+s|-centesis|surgical puncture to remove fluid
+s|-cide|killing
+s|-cyte|cell
+s|-desis|binding, surgical fusion
+s|-ectasis|dilation, expansion
+s|-ectomy|surgical removal, excision
+s|-emesis|vomiting
+s|-emia|blood condition
+s|-esthesia|sensation, feeling
+s|-gen, -genic|producing, caused by
+s|-genesis|origin, formation
+s|-gram|record, image
+s|-graph|instrument for recording
+s|-graphy|process of recording
+s|-ia, -ism, -osis, -iasis|condition (often abnormal)
+s|-itis|inflammation
+s|-lepsy|seizure
+s|-lith|stone
+s|-lysis|breakdown, destruction, separation
+s|-malacia|softening
+s|-megaly|enlargement
+s|-meter|instrument for measuring
+s|-metry|process of measuring
+s|-oid|resembling
+s|-ologist|specialist in the study of
+s|-ology|study of
+s|-oma|tumor, mass
+s|-opia|vision
+s|-ostomy|surgical creation of an opening
+s|-otomy|incision, cutting into
+s|-paresis|slight paralysis, weakness
+s|-pathy|disease
+s|-penia|deficiency, decrease
+s|-pexy|surgical fixation
+s|-phagia|eating, swallowing
+s|-phasia|speech
+s|-phobia|fear
+s|-plasia|development, formation
+s|-plasty|surgical repair
+s|-plegia|paralysis
+s|-pnea|breathing
+s|-poiesis|formation, production
+s|-ptosis|drooping, prolapse
+s|-ptysis|spitting
+s|-rrhage, -rrhagia|bursting forth (of blood)
+s|-rrhaphy|suture
+s|-rrhea|flow, discharge
+s|-rrhexis|rupture
+s|-sclerosis|hardening
+s|-scope|instrument for visual examination
+s|-scopy|visual examination
+s|-spasm|involuntary contraction
+s|-stasis|stopping, controlling
+s|-stenosis|narrowing, constriction
+s|-therapy|treatment
+s|-tome|instrument for cutting
+s|-tripsy|surgical crushing
+s|-trophy|development, nourishment
+s|-ule, -ole|small
+s|-uria|urine, urination`;
+
+const SYS_RAW = {
+body:`Anatomical position|Standing erect, facing forward, arms at sides with palms facing forward
+Anterior (ventral)|Front of the body
+Posterior (dorsal)|Back of the body
+Superior (cephalic)|Toward the head; above
+Inferior (caudal)|Away from the head; below
+Medial|Toward the midline of the body
+Lateral|Away from the midline; toward the side
+Proximal|Nearer to the point of attachment or origin
+Distal|Farther from the point of attachment or origin
+Superficial|Toward or at the body surface
+Deep|Away from the body surface
+Midsagittal plane|Divides the body into equal right and left halves
+Frontal (coronal) plane|Divides the body into front and back portions
+Transverse (horizontal) plane|Divides the body into upper and lower portions
+Prone|Lying face down
+Supine|Lying face up, on the back
+Cranial cavity|Body cavity that contains the brain
+Spinal cavity|Body cavity that contains the spinal cord
+Thoracic cavity|Body cavity containing the heart and lungs
+Abdominal cavity|Body cavity containing the stomach, liver, and intestines
+Pelvic cavity|Body cavity containing the urinary bladder and reproductive organs
+Epigastric region|Upper middle abdominal region, above the stomach
+Umbilical region|Central abdominal region around the navel
+Hypogastric region|Lower middle abdominal region, below the navel
+Hypochondriac regions|Upper right and left abdominal regions, below the ribs
+Iliac (inguinal) regions|Lower right and left abdominal regions, near the groin
+Homeostasis|Maintaining a stable internal environment
+Histology|Study of tissues
+Viscera|Internal organs of the body
+Peritoneum|Membrane lining the abdominal cavity
+Mediastinum|Space between the lungs containing the heart, trachea, and esophagus`,
+skel:`Osteoporosis|Loss of bone density causing porous, fragile bones
+Osteomyelitis|Inflammation of bone and bone marrow, usually from infection
+Osteoarthritis|Degenerative joint disease with wearing away of cartilage
+Rheumatoid arthritis|Autoimmune disease causing chronic joint inflammation
+Comminuted fracture|Break in which the bone is crushed or splintered into pieces
+Greenstick fracture|Incomplete break where the bone bends; common in children
+Compound (open) fracture|Broken bone that pierces through the skin
+Scoliosis|Abnormal lateral (sideways) curvature of the spine
+Kyphosis|Abnormal outward curvature of the thoracic spine (humpback)
+Lordosis|Abnormal inward curvature of the lumbar spine (swayback)
+Arthroplasty|Surgical repair or replacement of a joint
+Femur|Thigh bone
+Patella|Kneecap
+Clavicle|Collarbone
+Scapula|Shoulder blade
+Sternum|Breastbone
+Phalanges|Bones of the fingers and toes
+Tibia|Larger, medial bone of the lower leg (shin bone)
+Humerus|Bone of the upper arm
+Carpals|Wrist bones
+Tarsals|Ankle bones
+Cranium|Skull bones that enclose the brain
+Ilium|Upper, wing-shaped part of the hip bone
+Gout|Arthritis caused by uric acid crystals in a joint
+Bursitis|Inflammation of a fluid-filled sac near a joint
+Ligament|Fibrous tissue connecting bone to bone
+Osteoblast|Bone-forming cell
+Osteoclast|Cell that breaks down bone
+Diaphysis|Shaft of a long bone
+Epiphysis|End of a long bone
+Reduction|Restoring a fractured bone to its normal position
+Orthopedist|Physician specializing in bones, joints, and muscles`,
+musc:`Tendon|Fibrous tissue connecting muscle to bone
+Fascia|Band of fibrous tissue that surrounds and separates muscles
+Myositis|Inflammation of muscle
+Muscular dystrophy|Inherited disease causing progressive muscle weakness and degeneration
+Fibromyalgia|Chronic disorder of widespread muscle pain and tender points
+Atrophy|Wasting away or decrease in size of a muscle
+Hypertrophy|Increase in size of a muscle
+Flexion|Bending a joint to decrease the angle between bones
+Extension|Straightening a joint to increase the angle between bones
+Abduction|Movement away from the midline of the body
+Adduction|Movement toward the midline of the body
+Rotation|Turning a bone around its own axis
+Dorsiflexion|Bending the foot upward toward the shin
+Plantar flexion|Pointing the foot downward
+Pronation|Turning the palm downward
+Supination|Turning the palm upward
+Tenorrhaphy|Suture of a tendon
+Tendinitis|Inflammation of a tendon
+Myasthenia gravis|Autoimmune disorder causing muscle weakness from impaired nerve signals
+Carpal tunnel syndrome|Compression of the median nerve at the wrist
+Sprain|Injury to a ligament
+Strain|Injury from overstretching a muscle or tendon
+Ataxia|Lack of muscle coordination
+Skeletal muscle|Striated, voluntary muscle attached to bones
+Smooth (visceral) muscle|Nonstriated, involuntary muscle in the walls of organs
+Cardiac muscle|Striated, involuntary muscle of the heart
+Origin (of a muscle)|Muscle attachment to the less movable bone
+Insertion (of a muscle)|Muscle attachment to the more movable bone
+Electromyography (EMG)|Recording the electrical activity of muscles
+Rhabdomyolysis|Breakdown of skeletal muscle tissue, releasing its contents into the blood
+Bradykinesia|Abnormally slow movement
+Myoclonus|Sudden, involuntary jerking of a muscle`,
+resp:`Apnea|Temporary absence of breathing
+Eupnea|Normal, easy breathing
+Tachypnea|Abnormally rapid breathing
+Orthopnea|Difficulty breathing except in an upright position
+Asthma|Chronic airway inflammation with bronchospasm and wheezing
+Pneumonia|Lung inflammation, usually from infection, with fluid in the alveoli
+Emphysema|Destruction of alveolar walls causing loss of lung elasticity
+COPD|Chronic obstructive pulmonary disease; includes chronic bronchitis and emphysema
+Tuberculosis|Infectious lung disease caused by Mycobacterium tuberculosis
+Atelectasis|Collapsed or incompletely expanded lung
+Pleural effusion|Abnormal fluid in the pleural space
+Pneumothorax|Air in the pleural cavity causing lung collapse
+Hemothorax|Blood in the pleural cavity
+Epistaxis|Nosebleed
+Hemoptysis|Coughing or spitting up blood
+Pharyngitis|Inflammation of the throat (sore throat)
+Laryngitis|Inflammation of the voice box
+Tracheostomy|Surgical opening into the trachea for a breathing tube
+Thoracentesis|Surgical puncture of the chest wall to remove pleural fluid
+Bronchoscopy|Visual examination of the bronchi
+Spirometry|Measuring air volume and flow during breathing
+Alveoli|Tiny air sacs in the lungs where gas exchange occurs
+Diaphragm|Dome-shaped muscle separating the chest and abdomen; main muscle of breathing
+Hypoxia|Deficient oxygen in body tissues
+Cystic fibrosis|Inherited disorder producing thick mucus in the lungs and digestive tract
+Pulmonary embolism|Blood clot blocking an artery in the lung
+Auscultation|Listening to body sounds with a stethoscope
+Crackles (rales)|Fine crackling lung sounds heard on inspiration
+Wheezing|High-pitched whistling sound from narrowed airways
+Stridor|Harsh, high-pitched sound from upper airway obstruction
+Pertussis|Whooping cough; bacterial infection with violent coughing
+Endotracheal intubation|Placing a tube through the mouth into the trachea to keep the airway open`,
+dig:`GERD|Gastroesophageal reflux disease; backflow of stomach contents into the esophagus
+Cirrhosis|Chronic liver disease with scarring and loss of function
+Cholelithiasis|Gallstones
+Cholecystitis|Inflammation of the gallbladder
+Appendicitis|Inflammation of the appendix
+Crohn disease|Chronic inflammatory bowel disease that can affect any part of the GI tract
+Ulcerative colitis|Chronic inflammation and ulcers of the colon and rectum
+Diverticulosis|Presence of small pouches in the colon wall
+Hemorrhoids|Swollen, twisted veins in the rectum or anus
+Emesis|Vomiting
+Hematemesis|Vomiting blood
+Melena|Black, tarry stools containing digested blood
+Jaundice|Yellowing of the skin and eyes from excess bilirubin
+Peptic ulcer|Sore in the lining of the stomach or duodenum
+Ileus|Lack of normal intestinal movement, causing obstruction
+Colonoscopy|Visual examination of the colon
+EGD|Esophagogastroduodenoscopy; visual exam of the esophagus, stomach, and duodenum
+Pancreatitis|Inflammation of the pancreas
+Inguinal hernia|Protrusion of the intestine through a weak spot in the groin
+Hiatal hernia|Part of the stomach pushing up through the diaphragm
+Dyspepsia|Indigestion
+Peristalsis|Wavelike muscle contractions that move food through the GI tract
+Mastication|Chewing
+Deglutition|Swallowing
+Bilirubin|Pigment from the breakdown of red blood cells, excreted in bile
+Celiac disease|Autoimmune reaction to gluten that damages the small intestine
+Gingivitis|Inflammation of the gums
+Stomatitis|Inflammation of the mouth
+Ascites|Abnormal buildup of fluid in the abdominal cavity
+Duodenum|First part of the small intestine
+Constipation|Infrequent or difficult passage of stool
+Anorexia|Loss of appetite`,
+cv:`Myocardial infarction|Heart attack; death of heart muscle from lack of blood flow
+Angina pectoris|Chest pain from insufficient blood flow to the heart muscle
+Arrhythmia|Abnormal heart rhythm
+Atrial fibrillation|Rapid, irregular quivering of the atria
+Hypertension|High blood pressure
+Hypotension|Low blood pressure
+Atherosclerosis|Buildup of fatty plaque in artery walls
+Aneurysm|Bulging, weakened area in an artery wall
+Congestive heart failure|Heart cannot pump enough blood, causing fluid buildup
+Endocarditis|Inflammation of the inner lining of the heart
+Murmur|Abnormal heart sound caused by turbulent blood flow
+Varicose veins|Swollen, twisted veins, usually in the legs
+Thrombosis|Formation of a blood clot within a vessel
+Embolus|Clot or other material traveling through the bloodstream
+Ischemia|Reduced blood supply to tissue
+CABG|Coronary artery bypass graft; surgery to reroute blood around blocked coronary arteries
+Echocardiogram|Ultrasound image of the heart
+Electrocardiogram (ECG/EKG)|Record of the heart's electrical activity
+Anemia|Reduced red blood cells or hemoglobin
+Leukemia|Cancer of white blood cells
+Lymphadenopathy|Disease or swelling of the lymph nodes
+Lymphedema|Swelling caused by a buildup of lymph fluid
+Lymphoma|Cancer of lymphatic tissue
+Thymus|Lymphatic organ in the chest where T cells mature
+Thrombocyte|Platelet; blood cell that helps with clotting
+Hemostasis|Stopping or controlling bleeding
+Sphygmomanometer|Instrument for measuring blood pressure
+Systole|Contraction phase of the heartbeat
+Diastole|Relaxation phase of the heartbeat
+Vasoconstriction|Narrowing of a blood vessel
+Vasodilation|Widening of a blood vessel
+Hematoma|Collection of blood trapped in tissue
+Hemophilia|Inherited disorder in which blood does not clot normally
+Mitral valve|Valve between the left atrium and left ventricle
+Myocardium|Muscle layer of the heart
+Antibody|Protein made by immune cells that targets a specific antigen`,
+ns:`Meningitis|Inflammation of the membranes covering the brain and spinal cord
+Cerebrovascular accident (CVA)|Stroke; brain damage from an interrupted blood supply
+Transient ischemic attack (TIA)|Brief stroke-like episode with temporary symptoms
+Epilepsy|Disorder of recurrent seizures
+Hydrocephalus|Buildup of cerebrospinal fluid in the brain
+Concussion|Temporary brain dysfunction caused by a blow to the head
+Paraplegia|Paralysis of the lower body and legs
+Quadriplegia|Paralysis of all four limbs
+Parkinson disease|Progressive disorder with tremors and rigidity from loss of dopamine
+Alzheimer disease|Progressive dementia with memory loss
+Multiple sclerosis|Disease that destroys the myelin sheath around nerves
+Sciatica|Pain along the sciatic nerve down the back of the leg
+Syncope|Fainting
+Lumbar puncture|Needle inserted into the lower spine to withdraw cerebrospinal fluid
+Electroencephalogram (EEG)|Record of the brain's electrical activity
+Cerebellum|Part of the brain that coordinates balance and movement
+Medulla oblongata|Part of the brainstem that controls breathing and heart rate
+Neuron|Nerve cell
+Synapse|Space between neurons where impulses are transmitted
+Cataract|Clouding of the lens of the eye
+Glaucoma|Increased pressure within the eye that can damage the optic nerve
+Conjunctivitis|Inflammation of the membrane lining the eyelids (pinkeye)
+Myopia|Nearsightedness
+Hyperopia|Farsightedness
+Presbyopia|Loss of near vision with aging
+Astigmatism|Blurred vision from an irregularly curved cornea or lens
+Otitis media|Middle ear infection or inflammation
+Tinnitus|Ringing in the ears
+Vertigo|Sensation of spinning or dizziness
+Myringotomy|Incision into the eardrum
+Presbycusis|Hearing loss due to aging
+Strabismus|Misalignment of the eyes (crossed eyes)
+Macular degeneration|Deterioration of the central retina causing loss of central vision
+Diplopia|Double vision
+Otalgia|Ear pain
+Cochlea|Snail-shaped inner ear structure for hearing`,
+endo:`Diabetes mellitus|High blood sugar from lack of insulin or resistance to it
+Diabetes insipidus|Excessive thirst and urination from lack of antidiuretic hormone
+Hyperthyroidism|Overactivity of the thyroid gland
+Hypothyroidism|Underactivity of the thyroid gland
+Graves disease|Autoimmune form of hyperthyroidism, often with bulging eyes
+Goiter|Enlargement of the thyroid gland
+Cushing syndrome|Excess cortisol causing a round face, weight gain, and fat on the upper back
+Addison disease|Underactivity of the adrenal cortex (low cortisol)
+Acromegaly|Enlarged hands, feet, and face from excess growth hormone in adults
+Gigantism|Excess growth hormone before puberty causing abnormal height
+Polydipsia|Excessive thirst
+Insulin|Pancreatic hormone that lowers blood sugar
+Glucagon|Pancreatic hormone that raises blood sugar
+Thyroxine (T4)|Thyroid hormone that regulates metabolism
+Cortisol|Adrenal hormone that helps the body respond to stress
+Epinephrine|Adrenal hormone that triggers the fight-or-flight response
+Pituitary gland|The "master gland" at the base of the brain
+Islets of Langerhans|Pancreatic cell clusters that produce insulin and glucagon
+Adrenal glands|Glands located on top of each kidney
+Parathyroid glands|Glands that regulate blood calcium levels
+Thyroidectomy|Surgical removal of the thyroid gland
+Antidiuretic hormone (ADH)|Hormone that helps the kidneys retain water
+Estrogen|Female sex hormone produced mainly by the ovaries
+Testosterone|Male sex hormone produced mainly by the testes
+Hormone|Chemical messenger secreted into the bloodstream
+Exophthalmos|Abnormal protrusion of the eyeballs
+Tetany|Muscle spasms caused by low blood calcium
+Myxedema|Severe hypothyroidism in adults with swelling of the skin
+Melatonin|Pineal gland hormone that regulates sleep cycles
+Endocrinologist|Physician specializing in hormone disorders
+Hemoglobin A1c|Blood test showing average blood sugar over about three months
+Oxytocin|Hormone that stimulates uterine contractions and milk release`,
+repro:`Menorrhagia|Excessive menstrual bleeding
+Endometriosis|Uterine-lining tissue growing outside the uterus
+Salpingectomy|Surgical removal of a fallopian tube
+Mammography|Process of x-ray imaging of the breast
+Cervicitis|Inflammation of the cervix
+Pelvic inflammatory disease (PID)|Infection of the female reproductive organs
+Ectopic pregnancy|Pregnancy outside the uterus, usually in a fallopian tube
+Gravida|A pregnant woman; the number of pregnancies
+Para|Number of births after 20 weeks of gestation
+Cesarean section|Surgical delivery of a baby through an abdominal incision
+Episiotomy|Incision of the perineum to ease childbirth
+Colposcopy|Visual examination of the vagina and cervix
+Pap test|Cell sample from the cervix to screen for cancer
+Menopause|Permanent end of menstruation
+Vasectomy|Removal of part of the vas deferens for sterilization
+Orchitis|Inflammation of a testis
+Cryptorchidism|Undescended testicle
+Benign prostatic hyperplasia (BPH)|Noncancerous enlargement of the prostate gland
+Prostatectomy|Surgical removal of the prostate gland
+Circumcision|Surgical removal of the foreskin
+Testicular torsion|Twisting of the spermatic cord, cutting off blood supply to the testis
+Hydrocele|Fluid-filled sac around a testis
+Ovulation|Release of an egg from the ovary
+Placenta|Organ that nourishes the fetus through the umbilical cord
+Amniocentesis|Surgical puncture to remove amniotic fluid for testing
+Preeclampsia|Pregnancy condition with high blood pressure and protein in the urine
+Gamete|Sex cell (egg or sperm)
+Zygote|Fertilized egg
+Gestation|Period of development from fertilization to birth
+Obstetrics|Branch of medicine dealing with pregnancy and childbirth
+Gynecology|Study of the female reproductive system
+Neonate|Newborn infant (first 4 weeks of life)`,
+integ:`Eczema|Inflammatory skin condition with itchy, red, scaly patches
+Psoriasis|Chronic skin disease with silvery, scaly plaques
+Acne vulgaris|Inflammatory disease of the sebaceous glands and hair follicles
+Impetigo|Contagious bacterial skin infection with honey-colored crusts
+Cellulitis|Bacterial infection of the skin and underlying tissue
+Urticaria|Hives
+Pruritus|Itching
+Alopecia|Hair loss
+Onychomycosis|Fungal infection of the nails
+Tinea|Fungal skin infection (ringworm)
+Verruca|Wart
+Melanoma|Malignant tumor of pigment-producing cells
+Basal cell carcinoma|Most common skin cancer; arises from the deepest layer of the epidermis
+Keloid|Overgrown, raised scar
+Laceration|Torn, jagged wound
+Abrasion|Scraping away of the skin surface
+Ecchymosis|Large purplish patch from blood leaking under the skin
+Petechiae|Tiny pinpoint red or purple spots from bleeding under the skin
+Erythema|Redness of the skin
+Pallor|Paleness of the skin
+Vitiligo|Patchy loss of skin pigment causing white areas
+Albinism|Inherited lack of pigment in the skin, hair, and eyes
+Debridement|Removal of dead or damaged tissue from a wound
+Macule|Flat, discolored spot on the skin, such as a freckle
+Papule|Small, solid, raised skin lesion
+Vesicle|Small fluid-filled blister
+Pustule|Raised lesion filled with pus
+Cicatrix|Scar
+Diaphoresis|Profuse sweating
+Epidermis|Outer layer of the skin
+Dermis|Skin layer beneath the epidermis containing vessels and glands
+Sebaceous gland|Gland that secretes oil (sebum)
+Sudoriferous gland|Sweat gland
+Keratin|Hard protein found in hair, nails, and the epidermis
+Melanin|Pigment that gives skin its color
+Decubitus ulcer|Pressure sore (bedsore)
+Herpes zoster|Shingles; painful viral rash along a nerve
+Full-thickness burn|Third-degree burn destroying the epidermis and dermis
+Scabies|Contagious skin infestation by mites`,
+uri:`Glomerulonephritis|Inflammation of the glomeruli of the kidney
+Pyelonephritis|Infection and inflammation of the renal pelvis and kidney
+Nephrolithiasis|Kidney stones
+Lithotripsy|Crushing urinary stones with shock waves
+Cystitis|Inflammation of the urinary bladder
+Urethritis|Inflammation of the urethra
+Pyuria|Pus in the urine
+Hematuria|Blood in the urine
+Dysuria|Painful urination
+Anuria|Absence of urine production
+Oliguria|Scanty urine production
+Nocturia|Excessive urination at night
+Proteinuria|Protein in the urine
+Glycosuria|Sugar in the urine
+Enuresis|Involuntary urination, especially bedwetting
+Urinary incontinence|Inability to control urination
+Urinary retention|Inability to empty the bladder
+Hydronephrosis|Swelling of the kidney due to urine backing up
+Renal failure|Loss of the kidneys' ability to filter waste
+Hemodialysis|Filtering waste from the blood with an artificial kidney machine
+Urinary catheterization|Inserting a tube through the urethra into the bladder to drain urine
+Urinalysis|Physical, chemical, and microscopic examination of urine
+Nephron|Functional unit of the kidney
+Glomerulus|Cluster of capillaries in the kidney that filters blood
+Renal pelvis|Funnel-shaped collecting area in the kidney
+Ureter|Tube carrying urine from the kidney to the bladder
+Urethra|Tube carrying urine from the bladder out of the body
+Blood urea nitrogen (BUN)|Blood test measuring urea to assess kidney function
+Diuretic|Medication that increases urine output
+Micturition|Urination
+Polycystic kidney disease|Inherited disorder with many cysts in the kidneys
+Wilms tumor|Kidney cancer that occurs in children
+Urologist|Physician specializing in the urinary tract`
+};
+
+const BUILD_RAW = `gastritis|Inflammation of the stomach|gastr/o+-itis
+hepatitis|Inflammation of the liver|hepat/o+-itis
+cardiomegaly|Enlargement of the heart|cardi/o+-megaly
+nephrectomy|Surgical removal of a kidney|nephr/o+-ectomy
+arthroscopy|Visual examination of a joint|arthr/o+-scopy
+osteomalacia|Softening of bone|oste/o+-malacia
+tachycardia|Condition of a fast heart rate|tachy-+cardi/o+-ia
+bradycardia|Condition of a slow heart rate|brady-+cardi/o+-ia
+dyspnea|Difficult breathing|dys-+-pnea
+apnea|Absence of breathing|a-+-pnea
+hematology|Study of blood|hemat/o+-ology
+dermatitis|Inflammation of the skin|dermat/o+-itis
+leukocyte|White (blood) cell|leuk/o+-cyte
+erythrocyte|Red (blood) cell|erythr/o+-cyte
+cholecystectomy|Surgical removal of the gallbladder|cholecyst/o+-ectomy
+colostomy|Surgical creation of an opening into the colon|col/o+-ostomy
+tracheotomy|Incision into the trachea|trache/o+-otomy
+rhinoplasty|Surgical repair of the nose|rhin/o+-plasty
+myalgia|Muscle pain|my/o+-algia
+neuralgia|Nerve pain|neur/o+-algia
+otitis|Inflammation of the ear|ot/o+-itis
+hysterectomy|Surgical removal of the uterus|hyster/o+-ectomy
+mastectomy|Surgical removal of a breast|mast/o+-ectomy
+cystoscopy|Visual examination of the urinary bladder|cyst/o+-scopy
+nephrolithiasis|Condition of stones in the kidney|nephr/o+lith/o+-iasis
+hemiplegia|Paralysis of one half (side) of the body|hemi-+-plegia
+hypoglycemia|Deficient (low) sugar in the blood|hypo-+glyc/o+-emia
+hyperglycemia|Excessive (high) sugar in the blood|hyper-+glyc/o+-emia
+pericarditis|Inflammation of the area around the heart|peri-+cardi/o+-itis
+endoscopy|Visual examination within the body|endo-+-scopy
+subcutaneous|Pertaining to under the skin|sub-+cutane/o+-ous
+intravenous|Pertaining to within a vein|intra-+ven/o+-ous
+encephalitis|Inflammation of the brain|encephal/o+-itis
+polyuria|Excessive (much) urination|poly-+-uria
+oliguria|Scanty urine production|olig-+-uria
+hematuria|Blood in the urine|hemat/o+-uria
+dysphagia|Difficult swallowing|dys-+-phagia
+aphasia|Absence of (inability to produce) speech|a-+-phasia
+thrombocytopenia|Deficiency of clotting cells (platelets)|thromb/o+cyt/o+-penia
+angioplasty|Surgical repair of a vessel|angi/o+-plasty
+phlebitis|Inflammation of a vein|phleb/o+-itis
+lipoma|Fatty tumor|lip/o+-oma
+carcinoma|Cancerous tumor|carcin/o+-oma
+gastroenterology|Study of the stomach and small intestine|gastr/o+enter/o+-ology
+ophthalmologist|Specialist in the study of the eye|ophthalm/o+-ologist
+arteriosclerosis|Hardening of the arteries|arteri/o+-sclerosis
+splenomegaly|Enlargement of the spleen|splen/o+-megaly
+hepatomegaly|Enlargement of the liver|hepat/o+-megaly
+cyanosis|Abnormal condition of blueness (of the skin)|cyan/o+-osis
+mammogram|Record (image) of the breast|mamm/o+-gram
+oophorectomy|Surgical removal of an ovary|oophor/o+-ectomy
+craniotomy|Incision into the skull|crani/o+-otomy
+arthrocentesis|Surgical puncture of a joint to remove fluid|arthr/o+-centesis
+rhinorrhea|Discharge from the nose|rhin/o+-rrhea
+amenorrhea|Absence of menstrual flow|a-+men/o+-rrhea
+dysmenorrhea|Painful menstrual flow|dys-+men/o+-rrhea
+lithotripsy|Crushing of a stone|lith/o+-tripsy
+blepharoptosis|Drooping of the eyelid|blephar/o+-ptosis
+neuropathy|Disease of the nerves|neur/o+-pathy
+bronchitis|Inflammation of the bronchi|bronch/o+-itis
+laryngoscope|Instrument for visually examining the larynx|laryng/o+-scope
+hemorrhage|Bursting forth of blood|hem/o+-rrhage
+pyelonephritis|Inflammation of the renal pelvis and kidney|pyel/o+nephr/o+-itis`;
+
+const CATS = [
+  {key:'parts', name:'Roots, Prefixes, Suffixes & Combining Forms', short:'Word Parts', w:45},
+  {key:'body', name:'Overview of the Body', short:'Body Overview', w:5},
+  {key:'skel', name:'Skeletal', short:'Skeletal', w:5},
+  {key:'musc', name:'Muscular', short:'Muscular', w:5},
+  {key:'resp', name:'Respiratory', short:'Respiratory', w:5},
+  {key:'dig', name:'Digestive', short:'Digestive', w:5},
+  {key:'cv', name:'Cardiovascular & Lymphatic', short:'Cardio & Lymph', w:5},
+  {key:'ns', name:'Nervous & Special Senses', short:'Nervous & Senses', w:5},
+  {key:'endo', name:'Endocrine', short:'Endocrine', w:5},
+  {key:'repro', name:'Reproductive', short:'Reproductive', w:5},
+  {key:'integ', name:'Integumentary', short:'Integumentary', w:5},
+  {key:'uri', name:'Urinary', short:'Urinary', w:5}
+];
+const CAT = Object.fromEntries(CATS.map(c=>[c.key,c]));
+const TYPE = {p:'Prefix', r:'Combining form', s:'Suffix'};
+const BY = {}; const PARTS = []; const LBL = {}; const LABELS = {prefix:[], root:[], suffix:[]};
+PARTS_RAW.trim().split('\n').forEach(l=>{
+  const [ty,t,d] = l.split('|');
+  const it = {id:'parts:'+t, t, d, cat:'parts', type:TYPE[ty]};
+  PARTS.push(it);
+  t.split(', ').forEach(k=>{ LBL[k]=it; LABELS[ptype(k)].push(k); });
+});
+BY.parts = PARTS;
+for (const k in SYS_RAW) BY[k] = SYS_RAW[k].trim().split('\n').map(l=>{const [t,d]=l.split('|'); return {id:k+':'+t, t, d, cat:k};});
+const SYSTEM_ITEMS = CATS.slice(1).flatMap(c=>BY[c.key]);
+const ALL = [...PARTS, ...SYSTEM_ITEMS];
+const BUILD = BUILD_RAW.trim().split('\n').map(l=>{const [t,d,p]=l.split('|'); return {t,d,parts:p.split('+')};});
+
+function ptype(l){ return l.startsWith('-') ? 'suffix' : (l.endsWith('-') ? 'prefix' : 'root'); }
+
+/* ================= HELPERS ================= */
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+const STOP = new Set('of the and or to a an in on for by with from into that is are its as at be pertaining'.split(' '));
+function toks(s){ return new Set(s.toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).filter(w=>w.length>2 && !STOP.has(w))); }
+function conflict(a,b){
+  if (a.d===b.d || a.t===b.t) return true;
+  if (a.cat!=='parts' || b.cat!=='parts') return false;
+  const A = toks(a.d); for (const w of toks(b.d)) if (A.has(w)) return true;
+  return false;
+}
+function pickDistractors(item, n){
+  const pool = item.cat==='parts' ? PARTS.filter(p=>p.type===item.type) : BY[item.cat];
+  const out = [];
+  for (const c of shuffle(pool)){
+    if (c===item || conflict(item,c) || out.some(o=>conflict(o,c))) continue;
+    out.push(c); if (out.length===n) break;
+  }
+  return out;
+}
+function pickSet(pool, n){
+  const out=[]; for (const c of shuffle(pool)){ if (out.some(o=>conflict(o,c))) continue; out.push(c); if(out.length===n) break; } return out;
+}
+function catLabel(it){ return it.cat==='parts' ? 'Word Parts · '+it.type : CAT[it.cat].name; }
+
+function getDeck(key){
+  switch(key){
+    case 'all': return ALL;
+    case 'learning': return ALL.filter(i=>!S.known[i.id]);
+    case 'prefix': return PARTS.filter(p=>p.type==='Prefix');
+    case 'root': return PARTS.filter(p=>p.type==='Combining form');
+    case 'suffix': return PARTS.filter(p=>p.type==='Suffix');
+    case 'systems': return SYSTEM_ITEMS;
+    default: return BY[key] || ALL;
+  }
+}
+function deckOptions(extra, sel){
+  const o = [...extra,
+    ['parts','Word Parts — all (45% of test)'],['prefix','Word Parts — prefixes only'],['root','Word Parts — combining forms only'],['suffix','Word Parts — suffixes only'],
+    ...CATS.slice(1).map(c=>[c.key, c.name])];
+  return o.map(([v,t])=>`<option value="${v}" ${v===sel?'selected':''}>${esc(t)}</option>`).join('');
+}
+function planSample(n){
+  const parts = Math.round(n*0.45), rem = n-parts, sys = CATS.slice(1);
+  const base = Math.floor(rem/sys.length), extra = new Set(shuffle(sys).slice(0, rem%sys.length));
+  const out = shuffle(PARTS).slice(0,parts);
+  sys.forEach(c=> out.push(...shuffle(BY[c.key]).slice(0, base+(extra.has(c)?1:0))));
+  return shuffle(out);
+}
+function makeQ(item){
+  const ds = pickDistractors(item,3), isPart = item.cat==='parts', fwd = Math.random()<0.5;
+  const what = isPart ? item.type.toLowerCase() : 'term';
+  const prompt = fwd
+    ? `What does the ${what} <span class="term">${esc(item.t)}</span> mean?`
+    : `Which ${isPart?'word part':'term'} means “${esc(item.d)}”?`;
+  const choices = shuffle([item,...ds]);
+  return {item, prompt, opts: choices.map(c=> fwd? c.d : c.t), ans: choices.indexOf(item), user:null};
+}
+
+/* ================= STORAGE ================= */
+const KEY='hosaMedTermLab_v1';
+let S = {known:{}, best:{}, stats:{}, exams:[]};
+try { S = Object.assign(S, JSON.parse(localStorage.getItem(KEY)||'{}')); } catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function record(cat, ok){ const s = S.stats[cat] || (S.stats[cat]={c:0,t:0}); s.t++; if(ok) s.c++; save(); }
+
+/* ================= ROUTING ================= */
+const NAV = [['home','Home'],['flashcards','Flashcards'],['quiz','Quick Quiz'],['match','Match Game'],['builder','Word Builder'],['exam','Practice Exam']];
+let cur=null, keyHandler=null, tick=null;
+function go(v){
+  if (!views[v]) v='home';
+  cur=v; keyHandler=null; clearInterval(tick);
+  $('#nav').innerHTML = NAV.map(([k,t])=>`<button data-v="${k}" class="${k===v?'on':''}">${t}</button>`).join('');
+  $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>go(b.dataset.v));
+  try { if (location.hash.slice(1)!==v) history.replaceState(null,'','#'+v); } catch(e){}
+  views[v](); window.scrollTo(0,0);
+}
+$('#brand').onclick=()=>go('home');
+window.addEventListener('hashchange',()=>{ const h=location.hash.slice(1); if(h!==cur) go(h); });
+document.addEventListener('keydown', e=>{ if(keyHandler && !['SELECT','INPUT','TEXTAREA'].includes(e.target.tagName)) keyHandler(e); });
+
+/* ================= HOME ================= */
+function home(){
+  const rows = CATS.map(c=>`<div class="plan-row"><span>${esc(c.name)}</span><div class="track"><div class="fill ${c.key==='parts'?'c':''}" style="width:${c.w/45*100}%"></div></div><span class="num"><b>${c.w}%</b></span></div>`).join('');
+  const prog = CATS.map(c=>{
+    const tot=BY[c.key].length, k=BY[c.key].filter(i=>S.known[i.id]).length, st=S.stats[c.key];
+    return `<div class="prog-row"><span>${esc(c.short)}</span><div class="track"><div class="fill" style="width:${k/tot*100}%"></div></div><span class="num">${k}/${tot}${st&&st.t?` · ${Math.round(st.c/st.t*100)}%`:''}</span></div>`;
+  }).join('');
+  const exams = S.exams.length ? `<table><tr><th>Date</th><th>Questions</th><th>Score</th><th>Time</th></tr>${S.exams.map(x=>`<tr><td>${esc(x.d)}</td><td>${x.n}</td><td><b>${Math.round(x.s/x.n*100)}%</b> (${x.s}/${x.n})</td><td>${fmt(x.t)}</td></tr>`).join('')}</table>` : `<p class="muted" style="margin:0">No practice exams yet. Take one when you're ready to check where you stand.</p>`;
+  app.innerHTML = `
+  <h1>Medical Terminology Study Lab</h1>
+  <p class="sub">Study for the HOSA Medical Terminology test with ${ALL.length} terms and word parts, weighted the same way the test is: 45% word parts and 5% for each body-system topic.</p>
+  <div class="modes">
+    <button class="mode" data-v="flashcards"><div class="ic">🃏</div><b>Flashcards</b><span>Flip, sort into "got it" and "still learning"</span></button>
+    <button class="mode" data-v="quiz"><div class="ic">⚡</div><b>Quick Quiz</b><span>10–30 questions with instant feedback</span></button>
+    <button class="mode" data-v="match"><div class="ic">🧩</div><b>Match Game</b><span>Race the clock to pair terms and meanings</span></button>
+    <button class="mode" data-v="builder"><div class="ic">🧱</div><b>Word Builder</b><span>Snap prefixes, roots, and suffixes into terms</span></button>
+    <button class="mode" data-v="exam"><div class="ic">📝</div><b>Practice Exam</b><span>50 or 100 questions in the HOSA test-plan mix</span></button>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h2>HOSA test plan</h2>${rows}
+      <p class="muted" style="font-size:.84rem;margin:12px 0 0">Word parts are nearly half the test, so they're worth most of your study time. They also unlock the system terms: knowing <b>-itis</b>, <b>hepat/o</b>, and <b>cardi/o</b> gets you dozens of words.</p></div>
+    <div class="card"><h2>Your progress</h2>
+      <p class="muted" style="font-size:.8rem;margin:-6px 0 8px">Bar = flashcards marked "got it". % = quiz and exam accuracy.</p>${prog}
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span class="muted" style="font-size:.78rem">Progress is saved in this browser only.</span><button class="btn alt small" id="reset">Reset progress</button></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>Recent practice exams</h2>${exams}</div>`;
+  app.querySelectorAll('.mode').forEach(b=>b.onclick=()=>go(b.dataset.v));
+  const r=$('#reset'); let armed=false;
+  r.onclick=()=>{ if(!armed){ armed=true; r.textContent='Click again to erase all progress'; r.classList.replace('alt','coral'); return; }
+    S={known:{},best:{},stats:{},exams:[]}; save(); home(); };
+}
+
+/* ================= FLASHCARDS ================= */
+function flashcards(){
+  const st = {deckKey: S.flashDeck||'parts', front: S.flashFront||'term', deck:[], i:0};
+  app.innerHTML = `<h1>Flashcards</h1>
+  <p class="sub">Click the card to flip it. Mark each one "Got it" or "Still learning," then use the <b>Still learning</b> deck to drill only the cards you missed.</p>
+  <div class="controls">
+    <label class="lbl">Deck<select id="deck">${deckOptions([['all','All cards (every topic)'],['learning','⭐ Still learning (not marked "got it")']], st.deckKey)}</select></label>
+    <label class="lbl">Show first<select id="front"><option value="term" ${st.front==='term'?'selected':''}>Term / word part</option><option value="def" ${st.front==='def'?'selected':''}>Definition</option></select></label>
+    <button class="btn alt" id="shuf">🔀 Shuffle</button>
+  </div>
+  <div id="fcarea"></div>`;
+  $('#deck').onchange=e=>{ st.deckKey=S.flashDeck=e.target.value; save(); load(); };
+  $('#front').onchange=e=>{ st.front=S.flashFront=e.target.value; save(); draw(); };
+  $('#shuf').onclick=load;
+  function load(){ st.deck=shuffle(getDeck(st.deckKey)); st.i=0; draw(); }
+  function faces(it){
+    const termF = `<span class="tag">${esc(catLabel(it))}</span><div class="big">${esc(it.t)}</div>`;
+    const defF = `<span class="tag">Definition</span><div class="med">${esc(it.d)}</div>`;
+    return st.front==='term' ? [termF, defF] : [defF, termF];
+  }
+  function draw(){
+    const area=$('#fcarea');
+    if(!st.deck.length){ area.innerHTML=`<div class="card" style="text-align:center;max-width:660px;margin:0 auto"><div style="font-size:2rem">🎉</div><h2>No cards left in this deck</h2><p class="muted">You've marked every card here as "got it." Pick another deck, or take a Quick Quiz to prove it.</p></div>`; return; }
+    const it=st.deck[st.i], [f,b]=faces(it);
+    const known = st.deck.filter(x=>S.known[x.id]).length;
+    area.innerHTML = `<div class="flash">
+      <div class="meta" style="margin-bottom:10px"><span>Card ${st.i+1} of ${st.deck.length}</span><span>${known} of ${st.deck.length} marked "got it"</span></div>
+      <div class="fc" id="fc"><div class="face front">${f}${S.known[it.id]?'<span class="kb">✓ got it</span>':''}<span class="hint">click or press space to flip</span></div><div class="face back">${b}</div></div>
+      <div class="fc-actions">
+        <div class="grp"><button class="btn alt" id="prev">← Prev</button><button class="btn alt" id="next">Next →</button></div>
+        <div class="grp"><button class="btn coral" id="learn">Still learning</button><button class="btn ok" id="got">Got it ✓</button></div>
+      </div>
+      <div class="keys"><kbd>Space</kbd> flip · <kbd>←</kbd><kbd>→</kbd> move · <kbd>J</kbd> still learning · <kbd>K</kbd> got it</div></div>`;
+    $('#fc').onclick=flip; $('#prev').onclick=()=>move(-1); $('#next').onclick=()=>move(1);
+    $('#got').onclick=()=>mark(true); $('#learn').onclick=()=>mark(false);
+  }
+  function flip(){ $('#fc').classList.toggle('flip'); }
+  function move(d){ if(!st.deck.length) return; st.i=(st.i+d+st.deck.length)%st.deck.length; draw(); }
+  function mark(ok){
+    const it=st.deck[st.i]; if(!it) return;
+    if(ok) S.known[it.id]=1; else delete S.known[it.id]; save();
+    if(st.deckKey==='learning' && ok){ st.deck.splice(st.i,1); if(st.i>=st.deck.length) st.i=0; draw(); } else move(1);
+  }
+  keyHandler = e=>{
+    if(e.key===' '||e.key==='Enter'){ e.preventDefault(); flip(); }
+    else if(e.key==='ArrowRight') move(1); else if(e.key==='ArrowLeft') move(-1);
+    else if(e.key.toLowerCase()==='k') mark(true); else if(e.key.toLowerCase()==='j') mark(false);
+  };
+  load();
+}
+
+/* ================= QUICK QUIZ ================= */
+function quiz(){
+  app.innerHTML = `<h1>Quick Quiz</h1>
+  <p class="sub">Multiple-choice questions with instant feedback. Questions go both ways: term → meaning and meaning → term. Choose "Mixed by test plan" for the same blend as the real test.</p>
+  <div class="card"><div class="controls" style="margin:0">
+    <label class="lbl">Topic<select id="qcat">${deckOptions([['plan','Mixed by test plan (45% word parts)'],['systems','All body systems mixed']], S.quizCat||'plan')}</select></label>
+    <label class="lbl">Questions<select id="qn"><option>10</option><option selected>20</option><option>30</option></select></label>
+    <button class="btn" id="qgo">Start quiz</button></div></div>`;
+  $('#qgo').onclick=()=>{ S.quizCat=$('#qcat').value; save(); runQuiz(S.quizCat, +$('#qn').value); };
+}
+function runQuiz(cat, n){
+  const items = cat==='plan' ? planSample(n) : shuffle(getDeck(cat)).slice(0,n);
+  const qs = items.map(makeQ);
+  let i=0, score=0, streak=0, best=0, answered=false; const missed=[];
+  function draw(){
+    const q=qs[i]; answered=false;
+    app.innerHTML = `<div class="qwrap card">
+      <div class="meta"><span>Question ${i+1} of ${qs.length}</span><span>Score ${score} · Streak ${streak}${streak>=3?' 🔥':''}</span></div>
+      <div class="progress"><div style="width:${i/qs.length*100}%"></div></div>
+      <span class="pill">${esc(catLabel(q.item))}</span>
+      <div class="q-prompt">${q.prompt}</div>
+      <div class="opts">${q.opts.map((o,k)=>`<button class="opt" data-k="${k}"><b>${'ABCD'[k]}.</b>&nbsp; ${esc(o)}</button>`).join('')}</div>
+      <div id="fb"></div>
+      <div class="keys">Press <kbd>1</kbd>–<kbd>4</kbd> to answer, <kbd>Enter</kbd> for next</div></div>`;
+    app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(+b.dataset.k));
+  }
+  function answer(k){
+    if(answered) return; const q=qs[i]; if(k>=q.opts.length) return; answered=true;
+    const ok = k===q.ans; record(q.item.cat, ok);
+    app.querySelectorAll('.opt').forEach((b,j)=>{ b.disabled=true; if(j===q.ans) b.classList.add('right'); else if(j===k) b.classList.add('wrong'); });
+    if(ok){ score++; streak++; best=Math.max(best,streak); } else { streak=0; q.user=k; missed.push(q); }
+    $('#fb').innerHTML = `<div class="fb ${ok?'ok':'bad'}"><span>${ok?'✓ Correct!':'✗ Not quite.'} <b>${esc(q.item.t)}</b> = ${esc(q.item.d)}</span><button class="btn small" id="nx">${i+1<qs.length?'Next →':'See results'}</button></div>`;
+    $('#nx').onclick=next; $('#nx').focus();
+  }
+  function next(){ i++; if(i<qs.length) draw(); else done(); }
+  function done(){
+    keyHandler=null;
+    const pct=Math.round(score/qs.length*100);
+    app.innerHTML = `<div class="qwrap"><div class="card" style="text-align:center">
+      <div class="score-big">${pct}%</div><p style="margin:8px 0 4px">${score} of ${qs.length} correct · best streak ${best}</p>
+      <p class="muted" style="margin:0 0 16px">${pct>=90?'Excellent, you know this material.':pct>=75?'Solid. Review the misses below and go again.':'Keep at it. Flashcards on this topic will help, then retry.'}</p>
+      <button class="btn" id="again">Same quiz, new questions</button> <button class="btn alt" id="back">Change topic</button></div>
+      ${missed.length?`<div class="card" style="margin-top:14px"><h2>Review your misses</h2>${missed.map(q=>`<div class="miss"><b>${esc(q.item.t)}</b> = ${esc(q.item.d)}<br><span class="y">You chose: ${esc(q.opts[q.user])}</span></div>`).join('')}</div>`:''}</div>`;
+    $('#again').onclick=()=>runQuiz(cat,n); $('#back').onclick=quiz;
+  }
+  keyHandler = e=>{ if(!answered && /^[1-4]$/.test(e.key)) answer(+e.key-1); else if(answered && e.key==='Enter'){ e.preventDefault(); next(); } };
+  draw();
+}
+
+/* ================= MATCH GAME ================= */
+function match(){
+  let key = S.matchDeck||'parts';
+  app.innerHTML = `<h1>Match Game</h1>
+  <p class="sub">Click a term, then click its meaning. Clear all six pairs as fast as you can. Wrong matches count against you.</p>
+  <div class="controls"><label class="lbl">Deck<select id="mdeck">${deckOptions([['systems','All body systems mixed']], key)}</select></label><button class="btn" id="mnew">New round</button></div>
+  <div id="marea"></div>`;
+  $('#mdeck').onchange=e=>{ key=S.matchDeck=e.target.value; save(); round(); };
+  $('#mnew').onclick=()=>round();
+  function round(){
+    clearInterval(tick);
+    const items = pickSet(getDeck(key), 6), terms=shuffle(items), defs=shuffle(items);
+    let sel=null, misses=0, matched=0, t0=null, el=0;
+    const bestT = S.best[key];
+    $('#marea').innerHTML = `<div id="mban"></div>
+      <div class="mstat"><span>Time <b id="mt">0:00</b></span><span>Misses <b id="mm">0</b></span><span>Matched <b id="md">0</b>/6</span>${bestT!=null?`<span>Best <b>${fmt(bestT)}</b></span>`:''}</div>
+      <div class="match"><div>${terms.map(t=>`<button class="tile term" data-s="t" data-id="${esc(t.id)}">${esc(t.t)}</button>`).join('')}</div>
+      <div>${defs.map(t=>`<button class="tile" data-s="d" data-id="${esc(t.id)}">${esc(t.d)}</button>`).join('')}</div></div>`;
+    const tiles=[...$('#marea').querySelectorAll('.tile')];
+    tiles.forEach(b=>b.onclick=()=>{
+      if(!t0){ t0=Date.now(); tick=setInterval(()=>{ el=Math.floor((Date.now()-t0)/1000); const m=$('#mt'); if(m) m.textContent=fmt(el); },250); }
+      if(!sel || sel.dataset.s===b.dataset.s){ tiles.forEach(x=>x.classList.remove('sel')); sel=b; b.classList.add('sel'); return; }
+      const a=sel; sel=null; a.classList.remove('sel');
+      if(a.dataset.id===b.dataset.id){ a.classList.add('done'); b.classList.add('done'); matched++; $('#md').textContent=matched; if(matched===6) finish(); }
+      else { misses++; $('#mm').textContent=misses; [a,b].forEach(x=>{x.classList.add('shake'); setTimeout(()=>x.classList.remove('shake'),400);}); }
+    });
+    function finish(){
+      clearInterval(tick); el=Math.round((Date.now()-t0)/1000);
+      const score = el + misses*5;
+      const isBest = S.best[key]==null || score<S.best[key];
+      if(isBest){ S.best[key]=score; save(); }
+      $('#mban').innerHTML=`<div class="banner"><span>🎉 Done in <b>${fmt(el)}</b> with ${misses} miss${misses===1?'':'es'}${misses?` (+${misses*5}s penalty = ${fmt(score)})`:''}.${isBest?' <b>New best!</b>':''}</span><button class="btn ok small" id="mag">Play again</button></div>`;
+      $('#mag').onclick=round;
+    }
+  }
+  round();
+}
+
+/* ================= WORD BUILDER ================= */
+function builder(){
+  app.innerHTML = `<h1>Word Builder</h1>
+  <p class="sub">Read the definition, then click word parts in order to build the medical term. This is how word parts show up on the test: as pieces of real terms.</p>
+  <div id="barea"></div>`;
+  const rounds = shuffle(BUILD).slice(0,10);
+  let r=0, firstTry=0;
+  function draw(){
+    const b=rounds[r]; let chosen=[], tries=0, solved=false;
+    const corr = b.parts, corrE = corr.map(l=>LBL[l]).filter(Boolean), dis=[];
+    const ok = l => !corr.includes(l) && !dis.includes(l) && LBL[l] && !corrE.some(c=>c===LBL[l]||conflict(c,LBL[l]));
+    corr.forEach(l=>{ const c=shuffle(LABELS[ptype(l)]).find(ok); if(c) dis.push(c); });
+    let guard=0; while(corr.length+dis.length<7 && guard++<50){ const ty=['prefix','root','suffix'][Math.floor(Math.random()*3)]; const c=shuffle(LABELS[ty]).find(ok); if(c) dis.push(c); }
+    const pool = shuffle([...corr, ...dis]);
+    $('#barea').innerHTML = `<div class="card qwrap">
+      <div class="meta"><span>Term ${r+1} of ${rounds.length}</span><span>First-try correct: ${firstTry}</span></div>
+      <div class="progress"><div style="width:${r/rounds.length*100}%"></div></div>
+      <span class="pill">Build the term that means…</span>
+      <div class="bdef">${esc(b.d)}</div>
+      <div class="slots" id="slots"></div>
+      <div class="pool" id="pool">${pool.map((l,k)=>`<button class="ptile ${ptype(l)}" data-k="${k}">${esc(l)}</button>`).join('')}</div>
+      <div class="legend"><span><i style="background:var(--coral-l)"></i>prefix</span><span><i style="background:var(--teal-l)"></i>combining form</span><span><i style="background:var(--violet-l)"></i>suffix</span></div>
+      <div id="bfb"></div>
+      <div class="navrow" id="bctl"><div style="display:flex;gap:8px"><button class="btn alt" id="clr">Clear</button><button class="btn alt" id="hint">💡 Hint</button></div><button class="btn" id="chk">Check</button></div></div>`;
+    const poolBtns=[...$('#pool').querySelectorAll('.ptile')];
+    poolBtns.forEach(btn=>btn.onclick=()=>{ if(solved) return; chosen.push(+btn.dataset.k); paint(); });
+    function paint(){
+      $('#slots').innerHTML = chosen.length ? chosen.map((k,j)=>`<button class="ptile ${ptype(pool[k])}" data-j="${j}" title="click to remove">${esc(pool[k])}</button>`).join('<span class="muted">+</span>') : '<span class="ph">Click word parts below to build the term</span>';
+      $('#slots').querySelectorAll('.ptile').forEach(x=>x.onclick=()=>{ if(solved) return; chosen.splice(+x.dataset.j,1); paint(); });
+      poolBtns.forEach(x=>x.classList.toggle('used', chosen.includes(+x.dataset.k)));
+    }
+    paint();
+    $('#clr').onclick=()=>{ if(solved) return; chosen=[]; paint(); };
+    $('#hint').onclick=()=>{ $('#bfb').innerHTML=`<div class="fb" style="background:#fff7e0;color:#7a5600">Look for parts meaning: <b>${corr.map(l=>esc(LBL[l]?LBL[l].d:l)).join('</b> + <b>')}</b></div>`; tries++; };
+    $('#chk').onclick=check;
+    function breakdown(){ return `<div class="breakdown">${corr.map(l=>`<span class="bd"><b>${esc(l)}</b> = ${esc(LBL[l]?LBL[l].d:'')}</span>`).join('')}</div>`; }
+    function check(){
+      if(solved) return;
+      const got = chosen.map(k=>pool[k]);
+      if(got.join('|')===corr.join('|')){
+        solved=true; if(tries===0) firstTry++;
+        $('#bfb').innerHTML=`<div class="fb ok" style="display:block"><div class="term-out">✓ ${esc(b.t)}</div>${breakdown()}</div>`;
+        finishCtl();
+      } else {
+        tries++;
+        $('#bfb').innerHTML=`<div class="fb bad"><span>✗ Not quite${got.length!==corr.length?` — this term uses ${corr.length} parts`:''}. Try again.</span><button class="btn alt small" id="show">Show answer</button></div>`;
+        $('#show').onclick=()=>{ solved=true; chosen=corr.map(l=>pool.indexOf(l)); paint(); $('#bfb').innerHTML=`<div class="fb bad" style="display:block"><div class="term-out" style="color:var(--bad)">${esc(b.t)}</div>${breakdown()}</div>`; finishCtl(); };
+      }
+    }
+    function finishCtl(){
+      $('#bctl').innerHTML=`<span></span><button class="btn" id="bnext">${r+1<rounds.length?'Next term →':'See results'}</button>`;
+      $('#bnext').onclick=()=>{ r++; r<rounds.length ? draw() : done(); }; $('#bnext').focus();
+    }
+    keyHandler = e=>{ if(e.key==='Enter'){ e.preventDefault(); solved ? $('#bnext')&&$('#bnext').click() : check(); } else if(e.key==='Backspace' && !solved){ chosen.pop(); paint(); } };
+  }
+  function done(){
+    keyHandler=null;
+    $('#barea').innerHTML=`<div class="card qwrap" style="text-align:center"><div class="score-big">${firstTry}/${rounds.length}</div><p>built correctly on the first try, with no hints</p><button class="btn" id="bag">Build 10 more</button></div>`;
+    $('#bag').onclick=builder;
+  }
+  draw();
+}
+
+/* ================= PRACTICE EXAM ================= */
+function exam(){
+  app.innerHTML = `<h1>Practice Exam</h1>
+  <p class="sub">A mixed test that follows the HOSA test plan exactly: 45% word parts and 5% for each of the 11 body-system topics. No feedback until you submit, just like the real thing. A timer shows how long you take.</p>
+  <div class="card"><div class="controls" style="margin:0">
+    <label class="lbl">Length<select id="en"><option value="50">50 questions</option><option value="100" selected>100 questions</option></select></label>
+    <button class="btn" id="ego">Start exam</button></div></div>`;
+  $('#ego').onclick=()=>runExam(+$('#en').value);
+}
+function runExam(n){
+  const qs = planSample(n).map(makeQ); let i=0; const t0=Date.now(); let armed=false;
+  tick=setInterval(()=>{ const el=$('#etm'); if(el) el.textContent=fmt(Math.floor((Date.now()-t0)/1000)); },500);
+  function draw(){
+    const q=qs[i], ans=qs.filter(x=>x.user!=null).length;
+    app.innerHTML = `<div class="qwrap card">
+      <div class="meta"><span>Question ${i+1} of ${n}</span><span>⏱ <b id="etm">${fmt(Math.floor((Date.now()-t0)/1000))}</b></span><span>${ans}/${n} answered</span></div>
+      <div class="progress"><div style="width:${ans/n*100}%"></div></div>
+      <div class="q-prompt">${q.prompt}</div>
+      <div class="opts">${q.opts.map((o,k)=>`<button class="opt ${q.user===k?'sel':''}" data-k="${k}"><b>${'ABCD'[k]}.</b>&nbsp; ${esc(o)}</button>`).join('')}</div>
+      <div class="navrow"><div style="display:flex;gap:8px"><button class="btn alt" id="ep" ${i===0?'disabled':''}>← Prev</button><button class="btn alt" id="enx" ${i===n-1?'disabled':''}>Next →</button></div>
+      <button class="btn coral" id="esub">${armed?`${n-ans} unanswered. Click again to submit`:'Submit exam'}</button></div>
+      <div class="qgrid">${qs.map((x,j)=>`<button class="${x.user!=null?'a':''} ${j===i?'cur':''}" data-j="${j}">${j+1}</button>`).join('')}</div></div>`;
+    app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+    $('#ep').onclick=()=>{ i--; draw(); }; $('#enx').onclick=()=>{ i++; draw(); };
+    app.querySelectorAll('.qgrid button').forEach(b=>b.onclick=()=>{ i=+b.dataset.j; draw(); });
+    $('#esub').onclick=()=>{ const left=n-qs.filter(x=>x.user!=null).length; if(left>0 && !armed){ armed=true; draw(); return; } submit(); };
+  }
+  function pick(k){ if(k>=qs[i].opts.length) return; qs[i].user=k; armed=false; if(i<n-1){ i++; } draw(); }
+  function submit(){
+    clearInterval(tick); keyHandler=null;
+    const secs=Math.floor((Date.now()-t0)/1000), score=qs.filter(q=>q.user===q.ans).length;
+    qs.forEach(q=>record(q.item.cat, q.user===q.ans));
+    S.exams.unshift({d:new Date().toLocaleDateString(), n, s:score, t:secs}); S.exams=S.exams.slice(0,8); save();
+    const rows = CATS.map(c=>{ const g=qs.filter(q=>q.item.cat===c.key); if(!g.length) return ''; const ok=g.filter(q=>q.user===q.ans).length, p=Math.round(ok/g.length*100);
+      return `<tr><td>${esc(c.name)}</td><td>${ok}/${g.length}</td><td style="width:40%"><div class="track"><div class="fill ${p<70?'c':''}" style="width:${p}%"></div></div></td><td><b>${p}%</b></td></tr>`; }).join('');
+    const missed = qs.filter(q=>q.user!==q.ans);
+    const pct=Math.round(score/n*100);
+    app.innerHTML = `<div class="qwrap">
+      <div class="card" style="text-align:center"><div class="score-big">${pct}%</div><p style="margin:8px 0 2px">${score} of ${n} correct · ${fmt(secs)}</p>
+      <p class="muted" style="margin:0 0 16px">Topics in coral are below 70%. Study those with flashcards first.</p>
+      <button class="btn" id="eag">Take another exam</button> <button class="btn alt" id="eh">Home</button></div>
+      <div class="card" style="margin-top:14px"><h2>Score by topic</h2><table><tr><th>Topic</th><th>Correct</th><th></th><th>%</th></tr>${rows}</table></div>
+      ${missed.length?`<div class="card" style="margin-top:14px"><h2>Review (${missed.length} missed)</h2>${missed.map(q=>`<div class="miss"><span class="pill">${esc(catLabel(q.item))}</span><br><b>${esc(q.item.t)}</b> = ${esc(q.item.d)}<br><span class="y">${q.user==null?'Not answered':'You chose: '+esc(q.opts[q.user])}</span></div>`).join('')}</div>`:''}</div>`;
+    $('#eag').onclick=exam; $('#eh').onclick=()=>go('home'); window.scrollTo(0,0);
+  }
+  keyHandler = e=>{ if(/^[1-4]$/.test(e.key)) pick(+e.key-1); else if(e.key==='ArrowRight' && i<n-1){ i++; draw(); } else if(e.key==='ArrowLeft' && i>0){ i--; draw(); } };
+  draw();
+}
+
+const views = {home, flashcards, quiz, match, builder, exam};
+go(location.hash.slice(1) || 'home');
+</script>
+</body>
+</html>
